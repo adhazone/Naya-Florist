@@ -215,14 +215,14 @@ function act(id,c,ms){const e=$(id);e.classList.remove('pick','wrap','give','joy
 /* ---------- menu, cerita, belanja ---------- */
 let sure=false;
 function menu(){
- clearT();if(G.cash0!=null){S.cash=G.cash0;save()}G.ph='idle';sure=false;const has=S.day>0||S.t>0;scene();$('cust').innerHTML='';$('bq').className='';$('notes').innerHTML='';$('bub').innerHTML='';$('chips').innerHTML='';$('opts').innerHTML='';$('qq').textContent='';$('hx').textContent='';$('pb').style.width='0';
+ clearT();if(G.cash0!=null){S.cash=G.cash0;G.cash0=null;save()}G.ph='idle';sure=false;const has=S.day>0||S.t>0;scene();$('cust').innerHTML='';$('bq').className='';$('notes').innerHTML='';$('bub').innerHTML='';$('chips').innerHTML='';$('opts').innerHTML='';$('qq').textContent='';$('hx').textContent='';$('pb').style.width='0';
  showOv(`<div><h1>Toko Bunga Naya</h1><p>Dari tanah kosong sampai toko besar. Bantu Naya berhitung!</p>
  <div><button class="md${MODE=='h'?' on':''}" data-m="h">Horizontal 16:9</button><button class="md${MODE=='v'?' on':''}" data-m="v">Vertikal 9:16 (Shorts)</button><button class="md" id="mt">${MUTE?'Suara: mati':'Suara: hidup'}</button></div>
  <button class="go" id="st">${has?`Lanjutkan (Hari ${S.day+1}, ${fmt(S.cash)})`:'Mulai cerita'}</button><br>${has?'<button class="lk" id="rs">Mulai baru</button>':''}</div>`);
  document.querySelectorAll('.md[data-m]').forEach(b=>b.onclick=()=>{setMode(b.dataset.m);menu()});
  $('mt').onclick=()=>{setMute(!MUTE);$('mt').textContent=MUTE?'Suara: mati':'Suara: hidup';sfx.pop()};
  $('st').onclick=()=>{sfx.pop();has?shop():intro()};
- if(has)$('rs').onclick=()=>{if(!sure){sure=true;$('rs').textContent='Yakin? Tekan lagi untuk menghapus progres';return}S={cash:500,day:0,t:0,s:0,k:0,d:0,p:0,c:0};save();menu()}}
+ if(has)$('rs').onclick=()=>{if(!sure){sure=true;$('rs').textContent='Yakin? Tekan lagi untuk menghapus progres';return}clearT();G={ph:'idle',tms:[]};S={cash:500,day:0,t:0,s:0,k:0,d:0,p:0,c:0};save();menu()}}
 function intro(){showOv(`<div class="rp"><img alt="Naya" src="${$('naya').firstChild.src}"><div><h2>Tanah kosong...</h2><p>Naya punya modal <b>${fmt(500)}</b> dan satu mimpi: membuka toko bunga. Langkah pertama: beli lapak!</p><button class="go" id="g">Belanja modal pertama</button></div></div>`);$('g').onclick=shop}
 function shop(msg){
  scene();const ready=S.t>0;
@@ -279,7 +279,7 @@ function judge(v){
  later(900,()=>{$('cust').className='who out';$('bq').style.opacity=0});
  after(ok?2100:3000,()=>{$('bq').style.opacity='';G.ci++;nextCust()})}
 function payIn(amt){
- const old=S.cash;S.cash+=amt;save();
+ const old=S.cash;S.cash+=amt;
  const sr=$('stage').getBoundingClientRect(),src=($('notes').firstElementChild||$('cust')).getBoundingClientRect(),dst=$('hCash').getBoundingClientRect();
  const n=Math.min(6,Math.max(3,Math.round(amt/20)));let done=0;
  for(let i=0;i<n;i++){
